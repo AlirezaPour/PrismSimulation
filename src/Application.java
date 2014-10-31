@@ -12,13 +12,15 @@ import java.util.Scanner;
 
 public class Application {
 	
+	int experimentSeries = 1;
 	String variableName = "user_near_sending" ;
 	int maxValue = 200; 
-	double time = 30 ; 
+	double time = 200 ; 
 	String modelName = "model.sm" ;
-	int numberOfRuns=1000;	
+	int numberOfRuns=3;	
 	double snapshot = 15;
-	
+	String pathName = "path_" + variableName + "_series_" + experimentSeries + ".csv";  
+	String outputName = "prob_" + variableName + "_series_" + experimentSeries + ".csv" ;
 	
 	HashMap<Integer, Integer> bins;
 	HashMap<Integer, Double> probBins;
@@ -79,7 +81,7 @@ public class Application {
 	public void writeFile(){
 		String output;
 		 try {
-		        BufferedWriter out = new BufferedWriter(new FileWriter("/home/alireza/Dropbox/Academics/Thesis/TwoTierNetworkCaseStudy/Model/TwoFemtoCells/prob_dist_"+variableName+".csv"));
+		        BufferedWriter out = new BufferedWriter(new FileWriter("/home/alireza/Dropbox/Academics/Thesis/TwoTierNetworkCaseStudy/Model/TwoFemtoCells/PRISM_Analysis/"+outputName));
 		        out.write("value,prob\n");
 		        for (int i = 0; i <= maxValue; i++) {
 		        	output = String.format("%d,%f\n",i,probBins.get(i));
@@ -120,7 +122,7 @@ public class Application {
 			
 		Scanner in = null ;
 		try {
-			in = new Scanner(new FileReader("/home/alireza/Dropbox/Academics/Thesis/TwoTierNetworkCaseStudy/Model/TwoFemtoCells/output_path.csv"));
+			in = new Scanner(new FileReader("/home/alireza/Dropbox/Academics/Thesis/TwoTierNetworkCaseStudy/Model/TwoFemtoCells/PRISM_Analysis/" + pathName ));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Could not find the path file. Terminating.");
@@ -149,14 +151,14 @@ public class Application {
 	
 	public String[] buildCommand(String modelName, double time, String variableName, double snapshot){
 									
-		String[] command = {"/home/alireza/PRISM/prism-4.2.beta1-linux64/bin/prism", modelName , "-simpath", "time="+time+",snapshot="+snapshot+",vars=("+variableName+"),sep=comma", "output_path.csv", "-simpathlen", "100000000"};						
+		String[] command = {"/home/alireza/PRISM/prism-4.2.beta1-linux64/bin/prism", modelName , "-simpath", "time="+time+",snapshot="+snapshot+",vars=("+variableName+"),sep=comma", "./PRISM_Analysis/"+ pathName, "-simpathlen", "100000000"};						
 		return command;
 	}
 	
 	public void generateOnePath() throws IOException{
 		
 		
-		String[] command = this.buildCommand(modelName, time, variableName, snapshot);
+		String[] command = buildCommand(modelName, time, variableName, snapshot);
 		//System.out.printf("command = %s \n\n" , Arrays.toString(command));
 		
 		ProcessBuilder probuilder = new ProcessBuilder( command );
