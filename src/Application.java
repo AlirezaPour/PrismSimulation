@@ -15,10 +15,11 @@ public class Application {
 	int experimentSeries = 1;
 	String variableName = "user_near_sending" ;
 	int maxValue = 200; 
-	double time = 200 ; 
+	double time = 500 ; 
 	String modelName = "model.sm" ;
-	int numberOfRuns=3;	
-	double snapshot = 15;
+	int numberOfRuns=10000;	
+	double snapshot = 100;
+	
 	String pathName = "path_" + variableName + "_series_" + experimentSeries + ".csv";  
 	String outputName = "prob_" + variableName + "_series_" + experimentSeries + ".csv" ;
 	
